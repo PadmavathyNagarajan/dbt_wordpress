@@ -1,9 +1,4 @@
-{{ config(
-    materialized='incremental',
-    transient = false,
-    alias = 'search'
-)
-}}
+
 select 
     id::number as id,
     title::varchar as title,
@@ -11,5 +6,5 @@ select
     type::varchar as type,
     subtype::varchar as subtype,
     _fivetran_synced as record_loaded_at
-from {{ source('wordpress_sources', 'search')}}
-{{ incremental_logic()}}
+from raw.crm_wordpress_af.search
+where record_loaded_at > (select max(record_loaded_at) from CRM_EDW.WORDPRESS.search)

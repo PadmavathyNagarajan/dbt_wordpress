@@ -1,9 +1,4 @@
-{{ config(
-    materialized='incremental',
-    transient = false,
-    alias = 'tags'
-)
-}}
+
 select 
     id::number as id,
     count::number as count,
@@ -12,5 +7,5 @@ select
     slug::varchar as slug,
     taxonomy::varchar as taxonomy,
     _fivetran_synced as record_loaded_at
-from {{ source('wordpress_sources', 'tags')}}
-{{ incremental_logic()}}
+from raw.crm_wordpress_af.tags
+where record_loaded_at > (select max(record_loaded_at) from CRM_EDW.WORDPRESS.tags)

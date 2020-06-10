@@ -1,18 +1,18 @@
 version: 2
-
 sources:
   - name: wordpress_sources
     database: raw
-    schema: crm_wordpress_af
-    freshness:
-       warn_after: {count: 24, period: hour}
-       error_after: {count: 48, period: hour}
-    loaded_at_field: _fivetran_synced  
+    schema: wordpress
     tables:
-      - name: tb_categories_document
-      - name: tb_media_document
-      - name: tb_pages_document
-      - name: tb_posts_document
-      - name: tb_search_document
-      - name: tb_tags_document
-      - name: tb_users_document
+      - name: categories
+      - name: media
+      - name: pages
+      - name: posts
+      - name: search
+      - name: tags
+      - name: users
+      - name: fivetran_audit
+        freshness: 
+          warn_after: {count: 24, period: hour}
+          error_after: {count: 25, period: hour}
+        loaded_at_field: _fivetran_synced  

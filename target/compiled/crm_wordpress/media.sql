@@ -1,9 +1,4 @@
-{{ config(
-    materialized='incremental',
-    transient = false,
-    alias = 'pages'
-)
-}}
+
 select 
     id::number as id,
     date::timestamp as date,
@@ -16,14 +11,17 @@ select
     type::varchar as type,
     link::varchar as link,
     parse_json(title):"rendered"::varchar as title,
-    parse_json(excerpt):"protected"::boolean as excerpt_protected,
-    parse_json(excerpt):"rendered"::varchar as excerpt,
     author::number as author,
-    featured_media::number as featured_media,
-    parent::number as parent,
-    menu_order::number as menu_order,
     comment_status::varchar as comment_status,
     ping_status::varchar as ping_status,
+    parse_json(description):"rendered"::varchar as description,
+    parse_json(caption):"rendered"::varchar as caption,
+    alt_text::varchar as alt_text,
+    media_type::varchar as media_type,
+    mime_type::varchar as mime_type,
+    media_details::variant as media_details,
+    post::number as post,
+    source_url::varchar as source_url,
     _fivetran_synced as record_loaded_at
-from {{ source('wordpress_sources', 'pages')}}
-{{ incremental_logic()}}
+from raw.crm_wordpress_af.media
+where record_loaded_at > (select max(record_loaded_at) from CRM_EDW.WORDPRESS.media)

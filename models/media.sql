@@ -28,5 +28,5 @@ select
     post::number as post,
     source_url::varchar as source_url,
     _fivetran_synced as record_loaded_at
-from {{ source('wordpress_sources', 'tb_media_document')}}
+from {{ source('wordpress_sources', 'media')}}
 {{ incremental_logic()}}

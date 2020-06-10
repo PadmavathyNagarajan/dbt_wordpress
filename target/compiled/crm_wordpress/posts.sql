@@ -1,9 +1,4 @@
-{{ config(
-    materialized='incremental',
-    transient = false,
-    alias = 'posts'
-)
-}}
+
 select 
     id::number as id,
     date::timestamp as date,
@@ -26,5 +21,5 @@ select
     _fivetran_synced as record_loaded_at,
     categories::variant as categories,
     tags::variant as tags
-from {{ source('wordpress_sources', 'posts')}}
-{{ incremental_logic()}}
+from raw.crm_wordpress_af.posts
+where record_loaded_at > (select max(record_loaded_at) from CRM_EDW.WORDPRESS.posts)

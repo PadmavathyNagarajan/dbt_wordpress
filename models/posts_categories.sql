@@ -8,7 +8,7 @@ select * from (
     select id,
     categories.value::number as categories,
     _fivetran_synced as record_loaded_at
-from {{ source('wordpress_sources', 'tb_posts_document')}},
+from {{ source('wordpress_sources', 'posts')}},
 lateral flatten(input => categories, outer => true) categories) 
 {{ incremental_logic()}}
 {%- if is_incremental() -%}
