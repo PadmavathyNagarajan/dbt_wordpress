@@ -1,1 +1,0 @@
-select * from raw.crm_wordpress_af.fivetran_audit
