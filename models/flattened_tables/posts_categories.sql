@@ -1,6 +1,5 @@
 {{ config(
-    materialized='incremental',
-    transient = false,
+    materialized='view',
     alias = 'post_categories'
 )
 }}
@@ -10,10 +9,4 @@ select * from (
     record_captured_at as record_loaded_at
 from {{ source('wordpress_sources', 'posts')}},
 lateral flatten(input => PARSE_JSON(SRC):categories, outer => true) categories) 
-{{ incremental_logic()}}
-{%- if is_incremental() -%}
-and 
-{% else %}
-where 
-{% endif -%}
-categories is not null
+where categories is not null

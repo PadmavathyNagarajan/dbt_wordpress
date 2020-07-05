@@ -1,6 +1,5 @@
 {{ config(
-    materialized='incremental',
-    transient = false,
+    materialized='view',
     alias = 'media'
 )
 }}
@@ -29,4 +28,3 @@ select
     parse_json(SRC):source_url::varchar as source_url,
     record_captured_at as record_loaded_at
 from {{ source('wordpress_sources', 'media')}}
-{{ incremental_logic()}}

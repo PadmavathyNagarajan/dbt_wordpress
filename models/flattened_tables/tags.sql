@@ -1,6 +1,5 @@
 {{ config(
-    materialized='incremental',
-    transient = false,
+    materialized='view',
     alias = 'tags'
 )
 }}
@@ -13,4 +12,3 @@ select
     parse_json(src):taxonomy::varchar as taxonomy,
     record_captured_at as record_loaded_at
 from {{ source('wordpress_sources', 'tags')}}
-{{ incremental_logic()}}

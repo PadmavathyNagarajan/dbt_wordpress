@@ -1,6 +1,5 @@
 {{ config(
-    materialized='incremental',
-    transient = false,
+    materialized='view',
     alias = 'posts'
 )
 }}
@@ -27,4 +26,3 @@ select
     parse_json(SRC):tags::variant as tags,
     record_captured_at as record_loaded_at
 from {{ source('wordpress_sources', 'posts')}}
-{{ incremental_logic()}}

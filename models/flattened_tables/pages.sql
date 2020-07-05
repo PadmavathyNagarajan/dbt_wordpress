@@ -1,6 +1,5 @@
 {{ config(
-    materialized='incremental',
-    transient = false,
+    materialized='view',
     alias = 'pages'
 )
 }}
@@ -26,4 +25,3 @@ select
     parse_json(SRC):ping_status::varchar as ping_status,
     record_captured_at as record_loaded_at
 from {{ source('wordpress_sources', 'pages')}}
-{{ incremental_logic()}}

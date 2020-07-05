@@ -1,6 +1,5 @@
 {{ config(
-    materialized='incremental',
-    transient = false,
+    materialized='view',
     alias = 'categories'
 )
 }}
@@ -15,4 +14,3 @@ select
     parse_json(src):parent::number as parent,
     record_captured_at as record_loaded_at
 from {{ source('wordpress_sources', 'categories')}}
-{{ incremental_logic()}}

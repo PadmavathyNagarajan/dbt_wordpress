@@ -1,6 +1,5 @@
 {{ config(
-    materialized='incremental',
-    transient = false,
+    materialized='view',
     alias = 'users'
 )
 }}
@@ -15,4 +14,3 @@ select
     parse_json(src):meta::variant as meta,
     record_captured_at as record_loaded_at
 from {{ source('wordpress_sources', 'users')}}
-{{ incremental_logic()}}
