@@ -32,9 +32,8 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 models:
   crm_wordpress:
-      # Applies to all files under models/example/
-      materialized: view
-      tags: "wordpress"
-      vars:
-        environment_name: "dev"
-        limit_flag: 1
+      document_tables:
+        materialized: 'table'
+      flattened_tables:
+        materialized: 'view'
+        tags: 'wordpress'

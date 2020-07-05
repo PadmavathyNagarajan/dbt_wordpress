@@ -5,11 +5,11 @@
 )
 }}
 select * from (
-    select id,
+    select PARSE_JSON(SRC):id as id,
     tags.value::number as tags,
-    _fivetran_synced as record_loaded_at
+    record_captured_at as record_loaded_at
 from {{ source('wordpress_sources', 'posts')}},
-lateral flatten(input => tags, outer => true) tags) 
+lateral flatten(input => PARSE_JSON(SRC):tags, outer => true) tags) 
 {{ incremental_logic()}}
 {%- if is_incremental() -%}
 and 
